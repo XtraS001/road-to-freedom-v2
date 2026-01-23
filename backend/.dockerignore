@@ -1,0 +1,32 @@
+target/
+!.jar
+
+# Maven wrapper
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Logs
+logs/
+*.log
+
+# Git
+.git/
+.gitignore
+
+# OS files
+.DS_Store
+Thumbs.db
+
+application.properties
+application-*.properties
+.env
+.env.*
+
+src/test/
+README.md

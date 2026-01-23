@@ -1,0 +1,86 @@
+services:
+  database:
+    image: postgres:16
+    restart: always
+    volumes:
+      - rtf_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 5432:5432
+    networks:
+      - app_net
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: rtf-mailpit
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    ports:
+      - 8025:8025
+      - 1025:1025
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+  caddy:
+    image: caddy:latest
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  yfinance-fastapi:
+    image: yfinance-fastapi
+    ports:
+      - 8000:8000
+    networks:
+      - app_net
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    image: rtf-backend:latest
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/stocks_db
+      # Spring Boot gives these var higher priority than anything in application.properties
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      SPRING_MAIL_HOST: mailpit
+      SPRING_MAIL_PORT: 1025
+      YFINANCE_API_URL: http://yfinance-fastapi:8000
+    env_file:
+      - .env
+    depends_on:
+      - database
+      - mailpit
+      - yfinance-fastapi
+    networks:
+      - app_net
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+
+    image: rtf-frontend:latest
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
+      NEXT_PUBLIC_VAPID_PUBLIC_KEY: ${NEXT_PUBLIC_VAPID_PUBLIC_KEY}
+    networks:
+      - app_net
+networks:
+  app_net:
+    driver: bridge
+volumes:
+  rtf_db:

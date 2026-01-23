@@ -1,0 +1,40 @@
+# Python specific files and directories
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+venv
+.venv
+env
+.env
+
+# Project/Version Control files
+.git
+.gitignore
+.dockerignore # It's good practice to list this file itself
+Dockerfile
+docker-compose*.yml
+
+# Operating system/Editor files (macOS, Linux, Windows, IDEs)
+.DS_Store
+.vscode
+.idea
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Dependencies/Build directories (if using multi-stage builds, these aren't needed in final image)
+node_modules
+dist
+build
+*.egg-info
+
+# Configuration files only needed for local development
+config.local.json
+settings.local.py
+
+# Large datasets or documentation files not needed at runtime
+data
+docs
+*.log
+*.sqlite
