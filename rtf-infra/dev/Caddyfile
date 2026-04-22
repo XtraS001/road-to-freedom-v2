@@ -1,4 +1,4 @@
-http://192.168.68.57:8080 {
+http://localhost:8080 {
     route /api/* {
         reverse_proxy backend:8081
     }
