@@ -1,7 +1,5 @@
-http://localhost:8080 {
-========
 http://192.168.68.57:8080 {
->>>>>>>> main:rtf-infra/local/Caddyfile
+
     route /api/* {
         reverse_proxy backend:8081
     }
