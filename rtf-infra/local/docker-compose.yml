@@ -15,7 +15,6 @@ services:
 
   mailpit:
     image: axllent/mailpit
-    container_name: rtf-mailpit
     restart: unless-stopped
     volumes:
       - ./data:/data
@@ -33,21 +32,19 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
     ports:
       - "8080:8080"
+    restart: unless-stopped
     networks:
       - app_net
-    restart: unless-stopped
+
 
   yfinance-fastapi:
-    image: cxs001/yfinance-fastapi:1.0.0
+    image: cxs001/rtf-fastapi:latest
     ports:
       - 8000:8000
     networks:
       - app_net
 
   backend:
-    # build:
-    #   context: ../backend
-    #   dockerfile: Dockerfile
     image: cxs001/rtf-backend:1.0.0
     ports:
       - "8081:8081"
@@ -69,10 +66,6 @@ services:
       - app_net
 
   frontend:
-    # build:
-    #   context: ../frontend
-    #   dockerfile: Dockerfile
-
     image: cxs001/rtf-frontend:1.0.0
     ports:
       - "3000:3000"
