@@ -24,3 +24,5 @@ target/
 *.ipr
 
 resume_description.md
+
+.env
