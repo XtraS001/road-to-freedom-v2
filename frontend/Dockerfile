@@ -13,6 +13,15 @@ RUN npm ci
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
+
+# add this
+ARG NEXT_PUBLIC_BASE_URL
+ARG NEXT_PUBLIC_VAPID_PUBLIC_KEY
+
+# expose to build process
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+ENV NEXT_PUBLIC_VAPID_PUBLIC_KEY=$NEXT_PUBLIC_VAPID_PUBLIC_KEY
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 

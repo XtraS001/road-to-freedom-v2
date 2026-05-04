@@ -6,6 +6,10 @@ export default function Home() {
       <h1 className="text-4xl font-bold text-center">
         Welcome to your new Next.js project!
       </h1>
+      {/*  Display env variables NEXT_PUBLIC_BASE_URL: {process.env.NEXT_PUBLIC_BASE_URL} */}
+      {/* <div>
+        <p>NEXT_PUBLIC_BASE_URL: {process.env.NEXT_PUBLIC_BASE_URL}</p>
+      </div> */}
     </div>
   );
 }
